@@ -4,6 +4,8 @@ import android.util.Log
 import codes.carl.streamsprites.model.SpriteData
 import codes.carl.streamsprites.model.Test
 import codes.carl.streamsprites.viewmodels.ConnectionViewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,12 +24,8 @@ internal object Client {
     }
 }
 
-object ApiClient {
-    private lateinit var connectionViewModel: ConnectionViewModel
-
-    fun initialize(viewModel: ConnectionViewModel) {
-        connectionViewModel = viewModel
-    }
+object ApiClient : KoinComponent {
+    private val connectionViewModel: ConnectionViewModel by inject()
 
     val apiService: SpriteService by lazy {
         Client.retrofit.create(SpriteService::class.java)

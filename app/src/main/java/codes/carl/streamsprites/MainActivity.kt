@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,13 +34,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import codes.carl.streamsprites.network.ApiClient
 import codes.carl.streamsprites.sensors.PhoneSensor
 import codes.carl.streamsprites.ui.theme.StreamSpritesTheme
 import codes.carl.streamsprites.viewmodels.ConnectionViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity(), PhoneSensor.PermissionRequester {
-    private val connectionViewModel: ConnectionViewModel by viewModels()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -67,12 +65,13 @@ class MainActivity : ComponentActivity(), PhoneSensor.PermissionRequester {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ApiClient.initialize(connectionViewModel)
 
         enableEdgeToEdge()
         setContent {
             StreamSpritesTheme {
+                val connectionViewModel: ConnectionViewModel = koinViewModel()
                 val isConnected by connectionViewModel.connectionStatus.observeAsState(true)
+
                 Column(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
                     if (!isConnected) {
                         Box(
