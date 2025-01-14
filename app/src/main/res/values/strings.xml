@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Stream Sprites</string>
+    <string name="home">Welcome to Stream Sprites! Data will begin to upload automatically. Toggle options off to stop uploads.</string>
 </resources>
